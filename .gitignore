@@ -1,0 +1,8 @@
+__pycache__
+*.env
+.eggs
+.tox
+coverage.xml
+medmorph_pha.egg-info
+tests/.coverage
+
