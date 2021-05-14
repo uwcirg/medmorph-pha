@@ -12,3 +12,29 @@ services:
       - ${EXTERNAL_PORT:-5000}:5000
     env_file:
       - medmorph_pha.env
+
+  hapi:
+    image: "uwcirg/hapi-fhir-oauth2-starter:${HAPI_IMAGE_TAG:-develop}"
+    build:
+      context: .
+    environment:
+      JAVA_OPTIONS: "-Dhapi.properties=/opt/hapi.properties"
+      HAPI_SERVER_ADDRESS: "https://fhir.${BASE_DOMAIN:-localtest.me}/hapi-fhir-jpaserver/fhir/"
+
+    volumes:
+      - "./config/fhir/hapi.properties:/opt/hapi.properties:ro"
+    ports:
+      # allow override of published port
+      - ${HAPI_EXTERNAL_PORT:-8080}:8080
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: hapifhir
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+
+volumes:
+  db-data:
