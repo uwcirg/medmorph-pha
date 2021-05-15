@@ -38,9 +38,48 @@ comm_stub = {
     }]
 }
 
-response_bundle_stub = {
-    "resourceType": "Bundle",
-    "entry":[]
+message_header_stub = {
+    "resourceType": "MessageHeader",
+    "id": "messageheader-example-reportheader",
+    "meta": {
+        "versionId": "1",
+        "lastUpdated": "2020-11-29T02:03:28.045+00:00",
+        "profile": ["http://hl7.org/fhir/us/medmorph/StructureDefinition/us-ph-messageheader"]
+    },
+    "extension": [
+        {
+            "url": "http://hl7.org/fhir/us/medmorph/StructureDefinition/ext-dataEncrypted",
+            "valueBoolean": False
+        },
+        {
+            "url": "http://hl7.org/fhir/us/medmorph/StructureDefinition/ext-messageProcessingCategory",
+            "valueCode": "consequence"
+        }
+    ],
+    "eventCoding": {
+        "system": "http://hl7.org/fhir/us/medmorph/CodeSystem/us-ph-messageheader-message-types",
+        "code": "cancer-report-message"
+    },
+    "destination": [{
+        "name": "PHA endpoint",
+        "endpoint": "http://example.pha.org/fhir"
+    }],
+    "source": {
+        "name": "Healthcare Organization",
+        "software": "Backend Service App",
+        "version": "3.1.45.AABB",
+        "contact": {
+            "system": "phone",
+            "value": "+1 (917) 123 4567"
+        },
+        "endpoint": "http://example.healthcare.org/fhir"
+    },
+    "reason": {
+        "coding": [{
+            "system": "http://hl7.org/fhir/us/medmorph/CodeSystem/us-ph-triggerdefinition-namedevents",
+            "code": "encounter-close"
+        }]
+    }
 }
 
 
@@ -67,9 +106,10 @@ def create_communication(patient_id, fhir_url):
 
 def process_message_operation(reporting_bundle, fhir_url):
     # TODO persist entire incoming reporting bundle?
-    # TODO return stub MessageHeader if absent
-    # https://github.com/drajer-health/ecr-on-fhir/blob/master/fhir-eicr-r4/src/main/java/org/sitenv/spring/MessageHeaderResourceProvider.java#L143
-    message_header = get_first_resource(resource_type="MessageHeader", bundle=reporting_bundle)
+    message_header = get_first_resource(
+        resource_type="MessageHeader",
+        bundle=reporting_bundle,
+    ) or message_header_stub.copy()
     content_bundle = get_first_resource(resource_type="Bundle", bundle=reporting_bundle)
     patient = get_first_resource(resource_type="Patient", bundle=content_bundle)
     # TODO investigate whether to persist patient
