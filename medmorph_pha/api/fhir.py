@@ -10,7 +10,7 @@ blueprint = Blueprint('fhir', __name__, url_prefix='/fhir')
 @blueprint.route('/$process-message', methods=['POST'])
 def process_message():
     fhir_json = request.json
-    response = process_message_operation(fhir_json)
+    response = process_message_operation(fhir_json, fhir_url=current_app.config["BACKING_FHIR_URL"])
     return response
 
 

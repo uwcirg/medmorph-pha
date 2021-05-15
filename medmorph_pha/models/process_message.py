@@ -1,4 +1,5 @@
 import datetime
+import requests
 import uuid
 
 # TODO generalize for other non-cancer use cases
@@ -50,7 +51,7 @@ def get_first_resource(resource_type, bundle):
             return entry["resource"]
 
 
-def create_communication(patient_id):
+def create_communication(patient_id, fhir_url):
     """Create Communication resource from given patientId and persist"""
     comm = comm_stub.copy()
     comm.update({
@@ -59,11 +60,12 @@ def create_communication(patient_id):
         "meta": {"lastUpdated": datetime.datetime.now().isoformat() + "Z"},
     })
 
-    # TODO save Communication to HAPI, return id
-    return "d8e600a2-b1ca-460b-8bb5-9694f1402877"
+    comm_response = requests.post(f"{fhir_url}/Communication", json=comm)
+    comm_response.raise_for_status()
+    return comm_response.json()
 
 
-def process_message_operation(reporting_bundle):
+def process_message_operation(reporting_bundle, fhir_url):
     # TODO persist entire incoming reporting bundle?
     # TODO return stub MessageHeader if absent
     # https://github.com/drajer-health/ecr-on-fhir/blob/master/fhir-eicr-r4/src/main/java/org/sitenv/spring/MessageHeaderResourceProvider.java#L143
@@ -72,7 +74,7 @@ def process_message_operation(reporting_bundle):
     patient = get_first_resource(resource_type="Patient", bundle=content_bundle)
     # TODO investigate whether to persist patient
 
-    comm_id = create_communication(patient["id"])
+    comm_id = create_communication(patient["id"], fhir_url)["id"]
     message_header["focus"] = [{"reference": f"Communication/{comm_id}"}]
     message_header["id"] = uuid.uuid4()
 
