@@ -3,7 +3,7 @@ import requests
 import uuid
 
 # TODO generalize for other non-cancer use cases
-# https://github.com/drajer-health/ecr-on-fhir/blob/master/fhir-eicr-r4/src/main/java/org/sitenv/spring/MessageHeaderResourceProvider.java#L150
+# http://build.fhir.org/ig/HL7/fhir-medmorph/Communication-communication-example-cancer-pha-response.html
 comm_stub = {
     "resourceType": "Communication",
     "meta": {
@@ -38,6 +38,7 @@ comm_stub = {
     }]
 }
 
+# http://build.fhir.org/ig/HL7/fhir-medmorph/MessageHeader-messageheader-example-reportheader.html
 message_header_stub = {
     "resourceType": "MessageHeader",
     "id": "messageheader-example-reportheader",
@@ -119,10 +120,11 @@ def process_message_operation(reporting_bundle, fhir_url):
     message_header["focus"] = [{"reference": f"Communication/{comm_id}"}]
     message_header["id"] = str(uuid.uuid4())
 
-
+    # http://build.fhir.org/ig/HL7/fhir-medmorph/Bundle-response-bundle-example.html
     response_bundle = {
-        "id": str(uuid.uuid4()),
         "resourceType": "Bundle",
+        "type" : "message",
+        "id": str(uuid.uuid4()),
         "entry":[{"resource": message_header}],
     }
     return response_bundle
