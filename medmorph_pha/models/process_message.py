@@ -94,7 +94,8 @@ def create_communication(patient_id, fhir_url):
     """Create Communication resource from given patientId and persist"""
     comm = comm_stub.copy()
     comm.update({
-        "id": uuid.uuid4(),
+        # HAPI does not honor this ID and assigns a sequential ID; may be config issue
+        "id": str(uuid.uuid4()),
         "subject": {"reference": f"Patient/{patient_id}"},
         "meta": {"lastUpdated": datetime.datetime.now().isoformat() + "Z"},
     })
@@ -116,10 +117,12 @@ def process_message_operation(reporting_bundle, fhir_url):
 
     comm_id = create_communication(patient["id"], fhir_url)["id"]
     message_header["focus"] = [{"reference": f"Communication/{comm_id}"}]
-    message_header["id"] = uuid.uuid4()
+    message_header["id"] = str(uuid.uuid4())
 
-    response_bundle = response_bundle_stub.copy()
-    response_bundle["id"] = uuid.uuid4()
-    response_bundle["entry"].append({"resource": message_header})
 
+    response_bundle = {
+        "id": str(uuid.uuid4()),
+        "resourceType": "Bundle",
+        "entry":[{"resource": message_header}],
+    }
     return response_bundle
