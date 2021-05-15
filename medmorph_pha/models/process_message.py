@@ -116,8 +116,8 @@ def process_message_operation(reporting_bundle, fhir_url):
     patient = get_first_resource(resource_type="Patient", bundle=content_bundle)
     # TODO investigate whether to persist patient
 
-    comm_id = create_communication(patient["id"], fhir_url)["id"]
-    message_header["focus"] = [{"reference": f"Communication/{comm_id}"}]
+    communication = create_communication(patient["id"], fhir_url)
+    message_header["focus"] = [{"reference": f"Communication/{communication['id']}"}]
     message_header["id"] = str(uuid.uuid4())
 
     # http://build.fhir.org/ig/HL7/fhir-medmorph/Bundle-response-bundle-example.html
@@ -125,6 +125,9 @@ def process_message_operation(reporting_bundle, fhir_url):
         "resourceType": "Bundle",
         "type" : "message",
         "id": str(uuid.uuid4()),
-        "entry":[{"resource": message_header}],
+        "entry":[
+            {"resource": message_header},
+            {"resource": communication},
+        ],
     }
     return response_bundle
