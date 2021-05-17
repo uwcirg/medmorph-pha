@@ -34,3 +34,21 @@ def add_header(response):
     response.headers['Access-Control-Allow-Headers'] = 'Authorization'
 
     return response
+
+
+@blueprint.before_app_request
+def debug_request_dump():
+    if current_app.config.get("DEBUG_DUMP_HEADERS"):
+        current_app.logger.debug("{0.remote_addr} {0.method} {0.path} {0.headers}".format(request))
+    if current_app.config.get("DEBUG_DUMP_REQUEST"):
+        output = "{0.remote_addr} {0.method} {0.path}"
+        if request.data:
+            output += " {data}"
+        if request.args:
+            output += " {0.args}"
+        if request.form:
+            output += " {0.form}"
+        current_app.logger.debug(output.format(
+            request,
+            data=request.get_data(as_text=True),
+        ))
