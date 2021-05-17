@@ -118,7 +118,6 @@ def create_communication(patient_id, fhir_url):
     """Create Communication resource from given patientId and persist"""
     comm = comm_stub.copy()
     comm.update({
-        # HAPI does not honor this ID and assigns a sequential ID; may be config issue
         "id": str(uuid.uuid4()),
         "subject": {"reference": f"Patient/{patient_id}"},
         "meta": {"lastUpdated": datetime.datetime.now().isoformat() + "Z"},

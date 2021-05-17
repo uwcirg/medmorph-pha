@@ -32,15 +32,13 @@ class MockedResponse():
         return self._json
 
 
-def mock_post(url, json):
+def mock_request(url, json):
     """Mock requests.post"""
-    # simulate HAPI assigning sequential numeric IDs
-    if "id" in json:
-        json["id"] = "5"
     return MockedResponse(json)
 
 
 # load fake requests module for mocking
 fake_requests = type(sys)('requests')
-fake_requests.post = mock_post
+fake_requests.post = mock_request
+fake_requests.put = mock_request
 sys.modules['requests'] = fake_requests
