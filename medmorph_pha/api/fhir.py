@@ -2,12 +2,16 @@ import requests
 
 from flask import Blueprint, abort, current_app, request, session, g
 
+from medmorph_pha.models.process_message import process_message_operation
+
 blueprint = Blueprint('fhir', __name__, url_prefix='/fhir')
 
 
-@blueprint.route('/$process-message')
+@blueprint.route('/$process-message', methods=['POST'])
 def process_message():
-    return {}
+    fhir_json = request.json
+    response = process_message_operation(fhir_json, fhir_url=current_app.config["BACKING_FHIR_URL"])
+    return response
 
 
 @blueprint.route('/', defaults={'relative_path': ''})
