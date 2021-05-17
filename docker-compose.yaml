@@ -15,8 +15,6 @@ services:
 
   hapi:
     image: "uwcirg/hapi-fhir-oauth2-starter:${HAPI_IMAGE_TAG:-develop}"
-    build:
-      context: .
     environment:
       JAVA_OPTIONS: "-Dhapi.properties=/opt/hapi.properties"
       HAPI_SERVER_ADDRESS: "https://fhir.${BASE_DOMAIN:-localtest.me}/hapi-fhir-jpaserver/fhir/"
