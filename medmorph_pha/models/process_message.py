@@ -91,19 +91,40 @@ def get_first_resource(resource_type, bundle):
             return entry["resource"]
 
 
+def upsert_fhir_resource(fhir_resource, fhir_url):
+    """
+    Create or update given resource, by logical ID
+
+    See https://www.hl7.org/fhir/http.html#upsert
+    """
+
+    logical_id = fhir_resource.get("id", "")
+    resource_type = fhir_resource["resourceType"]
+
+    if logical_id:
+        request_verb = requests.put
+    else:
+        request_verb = requests.post
+
+    response = request_verb(
+        url=f"{fhir_url}/{resource_type}/{logical_id}",
+        json=fhir_resource,
+    )
+    response.raise_for_status()
+    return response.json()
+
+
 def create_communication(patient_id, fhir_url):
     """Create Communication resource from given patientId and persist"""
     comm = comm_stub.copy()
     comm.update({
-        # HAPI does not honor this ID and assigns a sequential ID; may be config issue
         "id": str(uuid.uuid4()),
         "subject": {"reference": f"Patient/{patient_id}"},
         "meta": {"lastUpdated": datetime.datetime.now().isoformat() + "Z"},
     })
 
-    comm_response = requests.post(f"{fhir_url}/Communication", json=comm)
-    comm_response.raise_for_status()
-    return comm_response.json()
+    new_comm = upsert_fhir_resource(fhir_resource=comm, fhir_url=fhir_url)
+    return new_comm
 
 
 def process_message_operation(reporting_bundle, fhir_url):
