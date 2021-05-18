@@ -3,7 +3,6 @@ from flask import current_app, has_app_context
 import requests
 import uuid
 
-# TODO generalize for other non-cancer use cases
 # http://build.fhir.org/ig/HL7/fhir-medmorph/Communication-communication-example-cancer-pha-response.html
 comm_stub = {
     "resourceType": "Communication",
