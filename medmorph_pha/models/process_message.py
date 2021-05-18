@@ -137,7 +137,7 @@ def create_communication(patient_id, fhir_url):
 
 
 def process_message_operation(reporting_bundle, fhir_url):
-    # TODO persist entire incoming reporting bundle?
+    upsert_fhir_resource(fhir_resource=reporting_bundle, fhir_url=fhir_url)
     message_header = get_first_resource(
         resource_type="MessageHeader",
         bundle=reporting_bundle,
