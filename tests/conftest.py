@@ -32,6 +32,16 @@ def reporting_bundle_response_example(request):
     return json_from_file(request, "Bundle-response-bundle-example.json")
 
 
+@fixture
+def zika_reporting_bundle_example(request):
+    return json_from_file(request, "Bundle-ecr-message-zika.json")
+
+
+@fixture
+def zika_response_bundle_example(request):
+    return json_from_file(request, "Bundle-response-zika.json")
+
+
 class MockedResponse():
     """Mock version of requests.response"""
     def __init__(self, json):

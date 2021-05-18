@@ -48,6 +48,24 @@ def test_process_message(
     assert len(response_bundle["entry"]) == len(reporting_bundle_response_example["entry"])
 
 
+def test_process_zika_message(
+        mocker, zika_reporting_bundle_example, zika_response_bundle_example):
+    # Patch remote_request to interrupt call to `fhir_url` during process message
+    mr = MockedResponse(zika_response_bundle_example)
+    mocker.patch(
+        'medmorph_pha.models.process_message.remote_request',
+        return_value=mr)
+
+    response_bundle = process_message_operation(
+        reporting_bundle=zika_reporting_bundle_example,
+        fhir_url="http://fake.com/fhir",
+    )
+
+    assert response_bundle["resourceType"] == "Bundle"
+    assert len(response_bundle["type"]) == len(zika_response_bundle_example["type"])
+    assert len(response_bundle["entry"]) == len(zika_response_bundle_example["entry"])
+
+
 def test_passthrough_put(client, mocker, org_example):
     mr = MockedResponse(org_example)
     mocker.patch(
