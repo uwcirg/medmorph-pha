@@ -91,6 +91,23 @@ def get_first_resource(resource_type, bundle):
             return entry["resource"]
 
 
+def remote_request(method, url, **kwargs):
+    if method.lower() == 'delete':
+        verb = requests.delete
+    elif method.lower() == 'get':
+        verb = requests.get
+    elif method.lower() == 'options':
+        verb = requests.options
+    elif method.lower() == 'post':
+        verb = requests.post
+    elif method.lower() == 'put':
+        verb = requests.put
+    else:
+        raise ValueError(f"unsupported request method '{method}'")
+
+    return verb(url, **kwargs)
+
+
 def upsert_fhir_resource(fhir_resource, fhir_url):
     """
     Create or update given resource, by logical ID
@@ -101,15 +118,11 @@ def upsert_fhir_resource(fhir_resource, fhir_url):
     logical_id = fhir_resource.get("id", "")
     resource_type = fhir_resource["resourceType"]
 
-    if logical_id:
-        request_verb = requests.put
-    else:
-        request_verb = requests.post
-
-    response = request_verb(
+    request_method = 'put' if logical_id else 'post'
+    response = remote_request(
+        method=request_method,
         url=f"{fhir_url}/{resource_type}/{logical_id}",
-        json=fhir_resource,
-    )
+        json=fhir_resource)
     response.raise_for_status()
     return response.json()
 

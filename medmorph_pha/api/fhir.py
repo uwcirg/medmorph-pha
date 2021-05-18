@@ -1,10 +1,12 @@
-import requests
+from flask import Blueprint, current_app, jsonify, request
 
-from flask import Blueprint, abort, current_app, request, session, g
-
-from medmorph_pha.models.process_message import process_message_operation
+from medmorph_pha.models.process_message import (
+    process_message_operation,
+    remote_request,
+)
 
 blueprint = Blueprint('fhir', __name__, url_prefix='/fhir')
+ALL_METHODS=['DELETE', 'GET', 'OPTIONS', 'POST', 'PUT']
 
 
 @blueprint.route('/$process-message', methods=['POST'])
@@ -14,8 +16,8 @@ def process_message():
     return response
 
 
-@blueprint.route('/', defaults={'relative_path': ''})
-@blueprint.route('/<path:relative_path>')
+@blueprint.route('/', defaults={'relative_path': ''}, methods=ALL_METHODS)
+@blueprint.route('/<path:relative_path>', methods=ALL_METHODS)
 def route_fhir(relative_path):
     backing_fhir_base_url = current_app.config['BACKING_FHIR_URL']
     backing_fhir_url = '/'.join((backing_fhir_base_url, relative_path))
@@ -23,13 +25,13 @@ def route_fhir(relative_path):
     if 'Authorization' in request.headers:
         backing_headers = {'Authorization': request.headers['Authorization']}
 
-    # TODO pass all HTTP verbs, not just GET
-    backing_response = requests.get(
+    backing_response = remote_request(
+        method=request.method,
         url=backing_fhir_url,
         headers=backing_headers,
         params=request.args,
     )
-    return backing_response.json(), backing_response.status_code
+    return jsonify(backing_response.json())
 
 
 @blueprint.after_request
