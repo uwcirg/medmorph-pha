@@ -155,8 +155,6 @@ def process_message_operation(reporting_bundle, fhir_url):
     content_bundle = get_first_resource(resource_type="Bundle", bundle=reporting_bundle)
     patient = get_first_resource(resource_type="Patient", bundle=content_bundle)
     if patient:
-        # TODO investigate whether to persist patient
-
         communication = create_communication(patient["id"], fhir_url)
         message_header["focus"] = [{"reference": f"Communication/{communication['id']}"}]
 
