@@ -1,0 +1,1 @@
+{"resourceType":"Bundle","type":"message","entry":[{"resource":{"resourceType":"MessageHeader","destination":[{"endpoint":"http://example.org/salem-medical-center/fhir"}],"source":{"endpoint":"http://localhost:8180/fhir/$process-message"},"response":{"code":"ok"}}}]}
