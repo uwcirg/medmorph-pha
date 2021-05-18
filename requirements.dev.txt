@@ -12,6 +12,8 @@ pluggy==0.13.1            # via pytest
 py==1.10.0                # via pytest
 pyparsing==2.4.7          # via packaging
 pytest==6.2.4             # via medmorph_pha (setup.py)
+pytest-flask==1.0.0       # via medmorph_pha (setup.py)
+pytest-mock==3.1.1        # via medmorph_pha (setup.py)
 toml==0.10.2              # via pytest
 typing-extensions==3.10.0.0  # via importlib-metadata
 zipp==3.4.1               # via importlib-metadata
