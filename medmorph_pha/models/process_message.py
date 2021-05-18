@@ -92,18 +92,14 @@ def get_first_resource(resource_type, bundle):
 
 
 def remote_request(method, url, **kwargs):
-    if method.lower() == 'delete':
-        verb = requests.delete
-    elif method.lower() == 'get':
-        verb = requests.get
-    elif method.lower() == 'options':
-        verb = requests.options
-    elif method.lower() == 'post':
-        verb = requests.post
-    elif method.lower() == 'put':
-        verb = requests.put
-    else:
-        raise ValueError(f"unsupported request method '{method}'")
+    verbs = {
+        "delete": requests.delete,
+        "get": requests.get,
+        "options": requests.options,
+        "post": requests.post,
+        "put": requests.put,
+    }
+    verb = verbs[method.lower()]
 
     return verb(url, **kwargs)
 
