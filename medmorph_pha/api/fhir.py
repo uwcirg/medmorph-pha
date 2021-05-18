@@ -31,8 +31,9 @@ def route_fhir(relative_path):
         headers=backing_headers,
         params=request.args,
     )
-    return jsonify(backing_response.json())
-
+    response = jsonify(backing_response.json())
+    response.status_code = backing_response.status_code
+    return response
 
 @blueprint.after_request
 def add_header(response):
