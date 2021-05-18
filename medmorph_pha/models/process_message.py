@@ -86,8 +86,11 @@ message_header_stub = {
 
 def get_first_resource(resource_type, bundle):
     """Iterate through the given bundle, returning the first matching resource of given type"""
-    for entry in bundle["entry"]:
-        if entry["resource"]["resourceType"] == resource_type:
+    if not bundle:
+        return
+
+    for entry in bundle.get("entry", []):
+        if entry.get("resource", {}).get("resourceType") == resource_type:
             return entry["resource"]
 
 

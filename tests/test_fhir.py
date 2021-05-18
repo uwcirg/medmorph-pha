@@ -1,7 +1,33 @@
 from flask import url_for
 
 from conftest import MockedResponse
-from medmorph_pha.models.process_message import process_message_operation
+from medmorph_pha.models.process_message import (
+    get_first_resource,
+    process_message_operation,
+)
+
+
+def test_get_first_legit(reporting_bundle_example):
+    result = get_first_resource('Bundle', reporting_bundle_example)
+    assert result['resourceType'] == 'Bundle'
+    assert result['id'] == 'content-bundle-example'
+
+
+def test_get_first_none():
+    result = get_first_resource('Bundle', None)
+    assert result is None
+
+
+def test_get_first_bogus():
+    bogus_bundle = {}
+    result = get_first_resource('Patient', bogus_bundle)
+    assert result is None
+
+
+def test_get_first_bogus_nest():
+    bogus_bundle = {'entry': [{'resourceType': 'Patient'}]}
+    result = get_first_resource('Patient', bogus_bundle)
+    assert result is None
 
 
 def test_process_message(
