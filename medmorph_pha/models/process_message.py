@@ -137,11 +137,12 @@ def create_communication(patient_id, fhir_url):
 
 
 def process_message_operation(reporting_bundle, fhir_url):
-    # TODO persist entire incoming reporting bundle?
+    upsert_fhir_resource(fhir_resource=reporting_bundle, fhir_url=fhir_url)
     message_header = get_first_resource(
         resource_type="MessageHeader",
         bundle=reporting_bundle,
     ) or message_header_stub.copy()
+
     content_bundle = get_first_resource(resource_type="Bundle", bundle=reporting_bundle)
     patient = get_first_resource(resource_type="Patient", bundle=content_bundle)
     # TODO investigate whether to persist patient
@@ -149,6 +150,7 @@ def process_message_operation(reporting_bundle, fhir_url):
     communication = create_communication(patient["id"], fhir_url)
     message_header["focus"] = [{"reference": f"Communication/{communication['id']}"}]
     message_header["id"] = str(uuid.uuid4())
+    upsert_fhir_resource(fhir_resource=message_header, fhir_url=fhir_url)
 
     # http://build.fhir.org/ig/HL7/fhir-medmorph/Bundle-response-bundle-example.html
     response_bundle = {
