@@ -1,4 +1,5 @@
 import datetime
+from flask import current_app, has_app_context
 import requests
 import uuid
 
@@ -100,7 +101,7 @@ def remote_request(method, url, **kwargs):
         "put": requests.put,
     }
     verb = verbs[method.lower()]
-
+    current_app.logger.debug("Fire request: %s %s %s", method, url, str(kwargs))
     return verb(url, **kwargs)
 
 
@@ -113,6 +114,8 @@ def upsert_fhir_resource(fhir_resource, fhir_url):
 
     logical_id = fhir_resource.get("id", "")
     resource_type = fhir_resource["resourceType"]
+    if has_app_context():
+        current_app.logger.debug("Upsert %s(id=%s)", resource_type, logical_id)
 
     request_method = 'put' if logical_id else 'post'
     response = remote_request(
@@ -162,4 +165,7 @@ def process_message_operation(reporting_bundle, fhir_url):
             {"resource": communication},
         ],
     }
+    if has_app_context():
+        current_app.logger.debug(
+            "$process_message returning: %s", str(response_bundle))
     return response_bundle
