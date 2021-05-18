@@ -10,6 +10,7 @@ def create_app(testing=False, cli=False):
     app = Flask('medmorph_pha')
     app.config.from_object('medmorph_pha.config')
     app.config['TESTING'] = testing
+    app.logger.setLevel(app.config['LOG_LEVEL'])
 
     register_blueprints(app)
     configure_proxy(app)
