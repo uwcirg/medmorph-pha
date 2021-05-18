@@ -104,7 +104,8 @@ def remote_request(method, url, **kwargs):
         "put": requests.put,
     }
     verb = verbs[method.lower()]
-    current_app.logger.debug("Fire request: %s %s %s", method, url, str(kwargs))
+    if has_app_context():
+        current_app.logger.debug("Fire request: %s %s %s", method, url, str(kwargs))
     return verb(url, **kwargs)
 
 
@@ -149,13 +150,16 @@ def process_message_operation(reporting_bundle, fhir_url):
         bundle=reporting_bundle,
     ) or message_header_stub.copy()
 
+    message_header["id"] = str(uuid.uuid4())
+    communication = None
     content_bundle = get_first_resource(resource_type="Bundle", bundle=reporting_bundle)
     patient = get_first_resource(resource_type="Patient", bundle=content_bundle)
-    # TODO investigate whether to persist patient
+    if patient:
+        # TODO investigate whether to persist patient
 
-    communication = create_communication(patient["id"], fhir_url)
-    message_header["focus"] = [{"reference": f"Communication/{communication['id']}"}]
-    message_header["id"] = str(uuid.uuid4())
+        communication = create_communication(patient["id"], fhir_url)
+        message_header["focus"] = [{"reference": f"Communication/{communication['id']}"}]
+
     upsert_fhir_resource(fhir_resource=message_header, fhir_url=fhir_url)
 
     # http://build.fhir.org/ig/HL7/fhir-medmorph/Bundle-response-bundle-example.html
@@ -163,11 +167,11 @@ def process_message_operation(reporting_bundle, fhir_url):
         "resourceType": "Bundle",
         "type" : "message",
         "id": str(uuid.uuid4()),
-        "entry":[
-            {"resource": message_header},
-            {"resource": communication},
-        ],
+        "entry":[{"resource": message_header}],
     }
+    if communication:
+        response_bundle['entry'].append({"resource": communication})
+
     if has_app_context():
         current_app.logger.debug(
             "$process_message returning: %s", str(response_bundle))
