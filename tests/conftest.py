@@ -33,6 +33,10 @@ def reporting_bundle_response_example(request):
 
 
 @fixture
+def us_ph_reporting_bundle_example(request):
+    return json_from_file(request, "Bundle_us-ph-report.json")
+
+@fixture
 def zika_reporting_bundle_example(request):
     return json_from_file(request, "Bundle-ecr-message-zika.json")
 
