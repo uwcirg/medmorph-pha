@@ -151,7 +151,6 @@ def process_message_operation(reporting_bundle, fhir_url):
     ) or message_header_stub.copy()
 
     message_header["id"] = str(uuid.uuid4())
-    message_header = tag_with_identifier(message_header, bundle_id)
     communication = None
     content_bundle = get_first_resource(resource_type="Bundle", bundle=reporting_bundle)
     patient = get_first_resource(resource_type="Patient", bundle=content_bundle)
