@@ -3,7 +3,6 @@ from flask import current_app, has_app_context
 import requests
 import uuid
 
-# TODO generalize for other non-cancer use cases
 # http://build.fhir.org/ig/HL7/fhir-medmorph/Communication-communication-example-cancer-pha-response.html
 comm_stub = {
     "resourceType": "Communication",
@@ -173,9 +172,9 @@ def process_message_operation(reporting_bundle, fhir_url):
     # http://build.fhir.org/ig/HL7/fhir-medmorph/Bundle-response-bundle-example.html
     response_bundle = {
         "resourceType": "Bundle",
-        "type" : "message",
+        "type": "message",
         "id": str(uuid.uuid4()),
-        "entry":[{"resource": message_header}],
+        "entry": [{"resource": message_header}],
     }
     if communication:
         response_bundle['entry'].append({"resource": communication})
