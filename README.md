@@ -1,6 +1,6 @@
 Public Health Authority role for MedMorph IG
 ============================================
-A simple flask proxy wrapped around HAPI FHIR, providing $process-message operation
+A simple flask proxy wrapped around HAPI FHIR, providing `$process-message` operation
 
 Development
 -----------
