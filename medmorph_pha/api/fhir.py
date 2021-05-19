@@ -1,4 +1,4 @@
-from flask import Blueprint, current_app, jsonify, request
+from flask import Blueprint, abort, current_app, jsonify, request
 
 from medmorph_pha.models.process_message import (
     process_message_operation,
@@ -12,6 +12,8 @@ ALL_METHODS=['DELETE', 'GET', 'OPTIONS', 'POST', 'PUT']
 @blueprint.route('/$process-message', methods=['POST'])
 def process_message():
     fhir_json = request.json
+    if not fhir_json:
+        abort(400, "POST requires valid FHIR Bundle as Content-Type: application/json")
     response = process_message_operation(fhir_json, fhir_url=current_app.config["BACKING_FHIR_URL"])
     return response
 
@@ -34,6 +36,7 @@ def route_fhir(relative_path):
     response = jsonify(backing_response.json())
     response.status_code = backing_response.status_code
     return response
+
 
 @blueprint.after_request
 def add_header(response):

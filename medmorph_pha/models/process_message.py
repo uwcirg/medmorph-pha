@@ -114,6 +114,8 @@ def upsert_fhir_resource(fhir_resource, fhir_url):
 
     See https://www.hl7.org/fhir/http.html#upsert
     """
+    if not fhir_resource:
+        raise ValueError("Can't upsert null resource")
 
     logical_id = fhir_resource.get("id", "")
     resource_type = fhir_resource["resourceType"]
@@ -155,7 +157,9 @@ def process_message_operation(reporting_bundle, fhir_url):
     content_bundle = get_first_resource(resource_type="Bundle", bundle=reporting_bundle)
     patient = get_first_resource(resource_type="Patient", bundle=content_bundle)
     if patient:
-        # TODO investigate whether to persist patient
+        patient = tag_with_identifier(patient, bundle_id)
+        upsert_fhir_resource(fhir_resource=patient, fhir_url=fhir_url)
+
         communication = comm_stub.copy()
         communication.update({
             "id": str(uuid.uuid4()),

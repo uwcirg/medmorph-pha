@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+<title>{{ title }}</title>
+  </head>
+  <body>
+<h1>{{ title }}</h1>
+  <table>
+    <tr>
+      <th>Received</th>
+      <th>Report ID</th>
+      <th>Name</th>
+      <th>DOB</th>
+      <th>Gender</th>
+    </tr>
+  {% for bundle in bundles %}
+      <tr>
+        <td>{{ bundle.last_updated }}</td>
+        <td><a href="{{ bundle.url }}">{{ bundle.id }}</a></td>
+        <td>{{ bundle.name }}</td>
+        <td>&nbsp;</td>
+        <td>{{ bundle.sex }}</td>
+      </tr>
+  {% endfor %}
+  </table>
+  </body>
+</html>
