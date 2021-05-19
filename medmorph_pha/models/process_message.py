@@ -114,6 +114,8 @@ def upsert_fhir_resource(fhir_resource, fhir_url):
 
     See https://www.hl7.org/fhir/http.html#upsert
     """
+    if not fhir_resource:
+        raise ValueError("Can't upsert null resource")
 
     logical_id = fhir_resource.get("id", "")
     resource_type = fhir_resource["resourceType"]
