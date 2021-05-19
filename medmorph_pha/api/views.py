@@ -44,9 +44,10 @@ def reports():
                 for entry in patient.get('entry', []):
                     if 'resource' not in entry:
                         continue
+                    row['DOB'] = entry['resource'].get('birthDate', '')
                     row['sex'] = entry['resource'].get('gender', '')
                     try:
-                        row['name'] = ','.join((
+                        row['name'] = ', '.join((
                             entry['resource'].get('name', [{}])[0].get('family', ''),
                             entry['resource'].get('name', [{}])[0].get('given', [])[0]))
                     except:
