@@ -39,7 +39,7 @@ def reports():
                 relative_path=f"Patient/?identifier=https://cirg.washington.edu/process-message|{id}"
             )
 
-            if True or patient_resource:
+            if patient_resource:
                 patient = patient_resource.json
                 for entry in patient.get('entry', []):
                     if 'resource' not in entry:
