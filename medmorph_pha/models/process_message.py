@@ -129,20 +129,21 @@ def upsert_fhir_resource(fhir_resource, fhir_url):
     return response.json()
 
 
-def create_communication(patient_id, fhir_url):
-    """Create Communication resource from given patientId and persist"""
-    comm = comm_stub.copy()
-    comm.update({
-        "id": str(uuid.uuid4()),
-        "subject": {"reference": f"Patient/{patient_id}"},
-        "meta": {"lastUpdated": datetime.datetime.now().isoformat() + "Z"},
+def tag_with_identifier(fhir_resource, value):
+    """Add a business identifier to given FHIR resource"""
+    fhir_resource.setdefault("identifier", [])
+    fhir_resource["identifier"].append({
+        "use": "usual",
+        "system": "https://cirg.washington.edu/process-message",
+        "value": value,
     })
-
-    new_comm = upsert_fhir_resource(fhir_resource=comm, fhir_url=fhir_url)
-    return new_comm
+    return fhir_resource
 
 
 def process_message_operation(reporting_bundle, fhir_url):
+    # add a logical id, if not already set
+    reporting_bundle.setdefault("id", str(uuid.uuid4()))
+    bundle_id = reporting_bundle["id"]
     upsert_fhir_resource(fhir_resource=reporting_bundle, fhir_url=fhir_url)
     message_header = get_first_resource(
         resource_type="MessageHeader",
@@ -154,7 +155,15 @@ def process_message_operation(reporting_bundle, fhir_url):
     content_bundle = get_first_resource(resource_type="Bundle", bundle=reporting_bundle)
     patient = get_first_resource(resource_type="Patient", bundle=content_bundle)
     if patient:
-        communication = create_communication(patient["id"], fhir_url)
+        # TODO investigate whether to persist patient
+        communication = comm_stub.copy()
+        communication.update({
+            "id": str(uuid.uuid4()),
+            "subject": {"reference": f"Patient/{patient['id']}"},
+            "meta": {"lastUpdated": datetime.datetime.now().isoformat() + "Z"},
+        })
+        communication = tag_with_identifier(communication, bundle_id)
+        communication = upsert_fhir_resource(fhir_resource=communication, fhir_url=fhir_url)
         message_header["focus"] = [{"reference": f"Communication/{communication['id']}"}]
 
     upsert_fhir_resource(fhir_resource=message_header, fhir_url=fhir_url)
