@@ -161,7 +161,7 @@ def process_message_operation(reporting_bundle, fhir_url):
         communication = comm_stub.copy()
         communication.update({
             "id": str(uuid.uuid4()),
-            "subject": {"reference": f"Patient/{patient_id}"},
+            "subject": {"reference": f"Patient/{patient['id']}"},
             "meta": {"lastUpdated": datetime.datetime.now().isoformat() + "Z"},
         })
         communication = tag_with_identifier(communication, bundle_id)
