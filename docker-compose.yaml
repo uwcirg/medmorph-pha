@@ -13,14 +13,19 @@ services:
     env_file:
       - medmorph_pha.env
 
-  hapi:
-    image: "uwcirg/hapi-fhir-oauth2-starter:${HAPI_IMAGE_TAG:-develop}"
+  fhir:
+    image: hapiproject/hapi:${FHIR_IMAGE_TAG:-v5.5.1}
     environment:
-      JAVA_OPTIONS: "-Dhapi.properties=/opt/hapi.properties"
-      HAPI_SERVER_ADDRESS: "https://fhir.${BASE_DOMAIN:-localtest.me}/hapi-fhir-jpaserver/fhir/"
+      SPRING_CONFIG_LOCATION: file:///opt/application.yaml
+      spring.datasource.url: jdbc:postgresql://db:5432/hapifhir
+      spring.datasource.username: postgres
+      spring.datasource.password: postgres
+      spring.datasource.driverClassName: org.postgresql.Driver
+      spring.jpa.hibernate.dialect: org.hibernate.dialect.PostgreSQL94Dialect
+      hapi.fhir.server_address: "https://fhir.${BASE_DOMAIN:-localtest.me}/fhir/"
 
     volumes:
-      - "./config/fhir/hapi.properties:/opt/hapi.properties:ro"
+      - "./config/fhir/application.yaml:/opt/application.yaml:ro"
     ports:
       # allow override of published port
       - ${HAPI_EXTERNAL_PORT:-8080}:8080
