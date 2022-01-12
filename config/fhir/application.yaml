@@ -66,11 +66,11 @@ hapi:
 #    enable_index_missing_fields: false
 #    enable_index_contained_resource: false
     enforce_referential_integrity_on_delete: false
-#    enforce_referential_integrity_on_write: false
+    enforce_referential_integrity_on_write: false
 #    etag_support_enabled: true
 #    expunge_enabled: true
 #    daoconfig_client_id_strategy: null
-#    client_id_strategy: ALPHANUMERIC
+    client_id_strategy: ANY
 #    fhirpath_interceptor_enabled: false
 #    filter_search_enabled: true
 #    graphql_enabled: true
