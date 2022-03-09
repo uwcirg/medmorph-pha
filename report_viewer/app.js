@@ -75,7 +75,7 @@ new Vue({
             axios.get(this.apiURL)
             .then(function (response) {
                 // handle success
-                console.log(response.data);
+                //console.log(response.data);
                 if (!response || !response.data || !response.data.entry || !response.data.entry.length ) {
                     self.setError("no response data available");
                     return;
