@@ -18,7 +18,7 @@ new Vue({
     data: function() {
         return {
                 apiURL: "https://medmorph-pha-fhir.cirg.washington.edu/fhir/Bundle",
-                //apiURL: "sampleData.json",  //uncomment here to test using sample data
+                //apiURL: "sampleData.json", //uncomment to test
                 initialized: false,
                 dialog: false,
                 tab: 0,
@@ -30,15 +30,18 @@ new Vue({
                     },
                     {
                         "text": "Name",
-                        "value": "subject.name"
+                        "value": "subject.name",
+                        "sortable": true
                     },
                     {
                         "text": "DOB",
-                        "value": "subject.dob"
+                        "value": "subject.dob",
+                        "sortable": true
                     },
                     {
                         "text": "Gender",
-                        "value": "subject.gender"
+                        "value": "subject.gender",
+                        "sortable": true
                     },
                     {
                         "text": "",
@@ -86,6 +89,7 @@ new Vue({
                     return item.resource;
                 });
                 self.resources.forEach(function(item) {
+                    item.id = Date.now() + Math.random() + Math.random() + Math.random() + Math.random();
                     item.data = item.entry ? item.entry.filter(function(item) {
                         return item.resource && item.resource.entry;
                     }).map(function(item) {
