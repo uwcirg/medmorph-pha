@@ -1,5 +1,5 @@
 html, body {
-    font-size: 18px;
+    font-size: 20px;
     box-sizing: border-box;
 }
 .loader {
@@ -30,6 +30,7 @@ html, body {
 }
 thead th {
     background-color: #f6f6f8;
+    font-size: 0.8rem;
 }
 th i {
     margin-left: 8px;
@@ -37,7 +38,7 @@ th i {
 .content {
     border: 1px solid #ececec;
     padding: 24px 16px;
-    font-size: 16px;
+    font-size: 0.9rem;
 }
 .content[datacount='1'],
 .content[dataCount='1'],
