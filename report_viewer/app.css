@@ -25,9 +25,6 @@ html, body {
     clear: both;
     margin-top: 24px;
 }
-.table-container .v-data-footer {
-    display: none;
-}
 thead th {
     background-color: #f6f6f8;
     font-size: 0.8rem;
