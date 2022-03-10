@@ -1,5 +1,5 @@
 html, body {
-    font-size: 20px;
+    font-size: 18px;
     box-sizing: border-box;
 }
 .loader {
@@ -24,6 +24,35 @@ html, body {
 .table-container {
     clear: both;
     margin-top: 24px;
+}
+.tool-bar-title {
+    width:50%;
+    font-weight: 500;
+}
+.tool-bar-logos-container {
+    display:flex;
+    flex-direction: column;
+    text-align: right;
+    width: calc(50% - 16px);
+}
+.tool-bar-study-title {
+    text-align: right;
+    position: relative;
+    top: -16px;
+    left: 12px;
+    font-size: 0.75rem;
+}
+@media (min-width: 968px) {
+    .tool-bar-study-title {
+        top: -12px;
+        font-size: 0.87rem;
+    }
+}
+.uw-logo {
+    position:relative; top: -10px; left: 12px;
+}
+img {
+    max-width: 100%;
 }
 thead th {
     background-color: #f6f6f8;
