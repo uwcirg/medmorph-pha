@@ -11,7 +11,7 @@
     "url": "https://fhir.localtest.me/fhir/Bundle?_pretty=true"
   } ],
   "entry": [
-    {
+  {
     "fullUrl": "https://fhir.localtest.me/fhir/Bundle/cancer-report",
     "resource": {
       "resourceType": "Bundle",
