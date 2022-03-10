@@ -137,31 +137,32 @@ new Vue({
         handleDialogClose: function() {
             this.tab = 0;
             this.dialog = false;
+            this.activeItem = {};
         },
         viewDetail: function(data, subject) {
             var resourceTypes = data.map(function(item) {
                 return item.resource.resourceType;
+            }).sort(function(a, b) {
+                return a.localeCompare(b);
             }).filter( function( item, index, inputArray ) {
                 return inputArray.indexOf(item) === index;
-            });
-            resourceTypes = resourceTypes.map(function(item) {
+            }).map(function(item, index) {
                 var resourceData = data.filter(function(o) {
                     return (o.resource.resourceType === item) && (o.resource.text && o.resource.text.div)
                 });
                 return {
                     "name": item,
+                    "sortIndex": item.toLowerCase() === "patient" ? -1 : index,
                     "count": resourceData.length,
                     "data": resourceData.map(function(o) {
                         return o.resource.text.div
                     })
                 }
+            }).sort(function(a, b) {
+                return (a.sortIndex - b.sortIndex);
             });
-            this.activeItem.resourceTypes = resourceTypes.sort(function(a, b) {
-                if (a.name.toLowerCase() === "patient") return -1;
-                if (a.name < b.name) return -1;
-                if (a.name > b.name) return 1;
-                return 0;
-            });
+            //console.log("resources types ", resourceTypes)
+            this.activeItem.resourceTypes = resourceTypes;
             this.activeItem.subject = subject;
             this.tab = 0;
             this.dialog = true;
