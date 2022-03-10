@@ -75,14 +75,7 @@ new Vue({
         },
         getData: function() {
             var self = this;
-            axios.get(this.apiURL, {
-                // query URL without using browser cache
-                headers: {
-                  'Cache-Control': 'no-cache',
-                  'Pragma': 'no-cache',
-                  'Expires': '0',
-                },
-              })
+            axios.get(this.apiURL)
             .then(function (response) {
                 // handle success
                 //console.log(response.data);
