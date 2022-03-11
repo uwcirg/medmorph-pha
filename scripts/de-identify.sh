@@ -42,3 +42,6 @@ sed -i "s|$LNAME|Study ID|g" "$cancer_bundle_path"
 # replace patient ID with "0"
 # NB replacing patient ID with the phrase "**redacted**" causes errors
 sed -i "s|$PTID|0|g" "$cancer_bundle_path"
+
+echo Bundle file scrubbed of visible PHI:
+echo $cancer_bundle_path
