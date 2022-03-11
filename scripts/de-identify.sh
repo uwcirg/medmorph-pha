@@ -6,7 +6,6 @@ cmdname="$(basename "$0")"
 script_path="$(cd "$(dirname "$0")" && pwd)"
 repo_path="$(readlink -f "${script_path}/..")"
 
-
 usage() {
    cat << USAGE >&2
 Usage:
@@ -23,28 +22,23 @@ USAGE
    exit 1
 }
 
-
-
 if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     usage
 fi
 
-# 
-# LNAME = “Study ID" 
-# FNAME = 016-002xxx 
-# 
-# replace Patient Id
-# 
-# Patient ID = “**redacted**” 
-# 
-# Or “0” 
-# Or use digits from FNAME 
+
+# Connectathon Patient details
+cancer_bundle_path="${repo_path}/test-data/Bundle_cancer-report.json"
 FNAME=MEREDITH
-sed -i "s|$FNAME|016-002001|g" "${repo_path}/test-data/Bundle_cancer-report.json"
-
 LNAME=SHEPHERD
-sed -i "s|$LNAME|Study ID|g" "${repo_path}/test-data/Bundle_cancer-report.json"
-
 PTID=12746018
-sed -i "s|$PTID|0|g" "${repo_path}/test-data/Bundle_cancer-report.json"
 
+# replace first name with a fixed Study ID
+sed -i "s|$FNAME|016-002001|g" "$cancer_bundle_path"
+
+# replace last name with phrase "Study ID"
+sed -i "s|$LNAME|Study ID|g" "$cancer_bundle_path"
+
+# replace patient ID with "0"
+# NB replacing patient ID with the phrase "**redacted**" causes errors
+sed -i "s|$PTID|0|g" "$cancer_bundle_path"
