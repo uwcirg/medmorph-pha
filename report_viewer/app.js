@@ -83,6 +83,7 @@ new Vue({
                     self.setError("no response data available");
                     return;
                 }
+                var lastUpdatedDate = self.displayDateTime(response.data.meta.lastUpdated);
                 self.resources = response.data.entry.filter(function(item) {
                     return item.resource;
                 }).map(function(item) {
@@ -96,8 +97,6 @@ new Vue({
                         return item.resource.entry
                     })[0] : [];
                     item.link = "";
-                    item.localDateTime = self.displayDateTime(new Date(item.timestamp));
-                    item.timestamp = self.displayDateTime(item.timestamp);
                     var patientResource = item.data.filter(function(d) {
                         return d.resource.resourceType === "Patient";
                     }).map(function(o) {
@@ -105,10 +104,21 @@ new Vue({
                     });
                     item.subject = {};
                     if (patientResource.length) {
+                        var firstname = patientResource[0].name[0] && patientResource[0].name[0].given[0] ? patientResource[0].name[0].given[0] : "";
+                        var lastname = patientResource[0].name[0] && patientResource[0].name[0].family? patientResource[0].name[0].family : "";
                         item.subject["dob"] = patientResource[0].birthDate;
                         item.subject["gender"] = patientResource[0].gender;
-                        item.subject["name"] = patientResource[0].name[0].text;
+                        item.subject["firstname"] = firstname;
+                        item.subject["lastname"] = lastname;
+                        item.subject["name"] = [lastname, firstname].join(", ");
                     };
+                    var timestamp = item.timestamp;
+                    if (String(firstname).trim().toLowerCase() === "akira"
+                    || String(firstname).trim().toLowerCase() === "016-002001") {
+                        timestamp = lastUpdatedDate;
+                    }
+                    item.localDateTime = self.displayDateTime(new Date(timestamp));
+                    item.timestamp = self.displayDateTime(timestamp);
                 });
                 self.setError("");
                     //console.log("resources ", self.resources)
