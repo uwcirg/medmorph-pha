@@ -35,6 +35,9 @@ restore_sqldump() {
     # restore a deployment from a given SQL dump file path
     local sqldump_path="$1"
 
+    # docker-compose commands must be run in the same directory as .env
+    cd "${repo_path}"
+
     echo "Stopping services..."
     docker-compose stop fhir
 
