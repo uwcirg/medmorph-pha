@@ -113,7 +113,7 @@ new Vue({
                         item.subject["name"] = [lastname, firstname].join(", ");
                     };
                     var timestamp = item.timestamp;
-                    if (String(firstname).trim().toLowerCase() === "akira"
+                    if (String(firstname).trim().toLowerCase() === "akari"
                     || String(firstname).trim().toLowerCase() === "016-002001") {
                         timestamp = lastUpdatedDate;
                     }
