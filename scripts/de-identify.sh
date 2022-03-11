@@ -28,7 +28,7 @@ fi
 
 
 # Connectathon Patient details
-cancer_bundle_path="${repo_path}/test-data/Bundle_cancer-report.json"
+cancer_bundle_path="${repo_path}/test-data/Bundle_cancer-report_connectathon-2022-01.json"
 FNAME=MEREDITH
 LNAME=SHEPHERD
 PTID=12746018
