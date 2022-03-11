@@ -35,6 +35,6 @@ FHIR_BASE_URL="$1"
 cancer_bundle_path="${repo_path}/test-data/Bundle_cancer-report_connectathon-2022-01.json"
 
 curl \
-    -H "Content-Type: application/json" \
+    --header "Content-Type: application/json" \
     --data @${cancer_bundle_path} \
     ${FHIR_BASE_URL}'/$process-message'
