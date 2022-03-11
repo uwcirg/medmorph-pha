@@ -76,7 +76,7 @@
                                 <v-data-table
                                     :headers="headers"
                                     :items="resources"
-                                    :options="{sortBy:['timestamp'], sortDesc: [true]}"
+                                    :options="{sortBy:['localDateTime'], sortDesc: [true]}"
                                     class="elevation-1"
                                     :items-per-page="parseInt('-1')"
                                     v-show="!loading"

@@ -24,8 +24,8 @@ new Vue({
                 tab: 0,
                 headers: [
                     {
-                        "text": "Received",
-                        "value": "timestamp",
+                        "text": "Received ("  + this.getCurrentTimeZone() + ")",
+                        "value": "localDateTime",
                         "sortable": true
                     },
                     {
@@ -96,6 +96,7 @@ new Vue({
                         return item.resource.entry
                     })[0] : [];
                     item.link = "";
+                    item.localDateTime = self.displayDateTime(new Date(item.timestamp));
                     item.timestamp = self.displayDateTime(item.timestamp);
                     var patientResource = item.data.filter(function(d) {
                         return d.resource.resourceType === "Patient";
@@ -126,13 +127,30 @@ new Vue({
                 }, 250);
             });
         },
+        pad: function(val, len) {
+            if (!val && parseInt(val) !== 0) return "";
+            val = String(val);
+            len = len || 2;
+            while (val.length < len) val = "0" + val;
+            return val;
+        },
         displayDateTime: function(timestamp) {
             if (!timestamp) return "";
+            if (timestamp instanceof Date) {
+                return [
+                    timestamp.getFullYear(),
+                    (this.pad(timestamp.getMonth()+1)),
+                    this.pad(timestamp.getDate())].join("-") + " " +
+                    [this.pad(timestamp.getHours()), this.pad(timestamp.getMinutes())].join(":");
+            }
             timestamp = timestamp.replace(/[\T]/g, " ");
             if (timestamp.indexOf(".") !== -1) {
                 timestamp = timestamp.substring(0, timestamp.indexOf("."));
             }
             return timestamp;
+        },
+        getCurrentTimeZone: function() {
+            return new Date().toLocaleDateString(undefined, {day:"2-digit",timeZoneName: "short" }).substring(4);
         },
         handleDialogClose: function() {
             this.tab = 0;
