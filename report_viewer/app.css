@@ -33,7 +33,7 @@ html, body {
     display:flex;
     flex-direction: column;
     text-align: right;
-    width: calc(50% - 16px);
+    width: calc(50% - 20px);
 }
 .tool-bar-study-title {
     text-align: right;
