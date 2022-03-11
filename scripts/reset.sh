@@ -32,3 +32,7 @@ DB_DUMP="${repo_path}/test-data/reset-snapshot.sql"
 
 echo Resetting...
 restore-database.sh "$DB_DUMP"
+
+cd "$repo_path"
+echo Starting Hapi FHIR...
+docker-compose up --detach fhir
