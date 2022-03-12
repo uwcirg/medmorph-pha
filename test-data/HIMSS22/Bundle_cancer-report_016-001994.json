@@ -7,7 +7,7 @@
     "profile": [ "http://hl7.org/fhir/us/medmorph/StructureDefinition/us-ph-reporting-bundle" ]
   },
   "type": "message",
-  "timestamp": "2022-01-12T13:55:39.205+00:00",
+  "timestamp": "2022-01-20T01:15:13.505+00:00",
   "entry": [ {
     "resource": {
       "resourceType": "MessageHeader",
@@ -4613,8 +4613,8 @@
               "start": "2020-11-06T21:27:32.000Z"
             }
           } ],
-          "gender": "female",
-          "birthDate": "1960-02-20",
+          "gender": "male",
+          "birthDate": "1961-03-11",
           "address": [ {
             "id": "CI-24338532-0",
             "use": "home",
