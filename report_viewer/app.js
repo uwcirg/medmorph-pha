@@ -83,7 +83,6 @@ new Vue({
                     self.setError("no response data available");
                     return;
                 }
-                var lastUpdatedDate = self.displayDateTime(response.data.meta.lastUpdated);
                 self.resources = response.data.entry.filter(function(item) {
                     return item.resource;
                 }).map(function(item) {
@@ -113,9 +112,8 @@ new Vue({
                         item.subject["name"] = [lastname, firstname].join(", ");
                     };
                     var timestamp = item.timestamp;
-                    if (String(firstname).trim().toLowerCase() === "akari"
-                    || String(firstname).trim().toLowerCase() === "016-002001") {
-                        timestamp = lastUpdatedDate;
+                    if (String(firstname).trim().toLowerCase() === "016-002001") {
+                        timestamp = item.meta.lastUpdated;
                     }
                     item.localDateTime = self.displayDateTime(new Date(timestamp));
                     item.timestamp = self.displayDateTime(timestamp);
