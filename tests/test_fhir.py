@@ -76,4 +76,4 @@ def test_passthrough_put(client, mocker, org_example):
         json=org_example)
     assert response.status_code == 200
     assert response.json['id'] == 'hl7'
-    assert response.headers['Access-Control-Allow-Headers'] == 'Authorization'
+    assert response.headers['Access-Control-Allow-Headers'] == 'Authorization, Content-Type'
