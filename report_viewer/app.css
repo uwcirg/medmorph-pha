@@ -2,6 +2,9 @@ html, body {
     font-size: 18px;
     box-sizing: border-box;
 }
+b {
+    font-weight: 500;
+}
 .loader {
     position: fixed;
     z-index: 999;

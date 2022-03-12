@@ -70,15 +70,12 @@
                             <br/>
                             <div class="table-container">
                                 <div v-show="loading">
-                                    <span class="orange--text text--darken-4">
-                                        Refreshing data, this may take a while ...
-                                    </span>
                                     <v-progress-circular
                                     indeterminate
                                     color="primary"
                                     class="ml-2"
                                     ></v-progress-circular>
-                                    <div v-show="waitCount > 0" class="orange--text text--darken-4">Time remaining:  <span v-text="waitCount"></span> seconds</div>
+                                    <div class="ml-2 mt-5" v-show="waitCount > 0" ><span class="orange--text text--darken-4" v-html="getWaitMessage(waitCount)"></span></div>
                                 </div>
                                 <v-data-table
                                     :headers="headers"

@@ -58,6 +58,14 @@ new Vue({
                 loading: true,
                 errorMessage: "",
                 maxWaitCount: 6,
+                waitMessages:[
+                    "Displaying all case reports",
+                    "Displaying all case reports",
+                    "Loading case reports ....",
+                    "Loading case reports ...",
+                    "Loading case reports ..",
+                    "Checking for a new case reports ....."
+                ],
                 waitCount: 0,
                 waitCountTimerId: 0
         };
@@ -106,6 +114,10 @@ new Vue({
         clearWait: function() {
             this.waitCount = 0;
             clearInterval(this.waitCountTimerId);
+        },
+        getWaitMessage: function(index) {
+            if (!this.waitMessages[index]) return "";
+            return this.waitMessages[index];
         },
         getData: function() {
             var self = this;
