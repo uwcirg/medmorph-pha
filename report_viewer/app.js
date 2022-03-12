@@ -17,7 +17,7 @@ new Vue({
     vuetify: new Vuetify(appData),
     data: function() {
         return {
-                apiURL: "https://medmorph-pha-fhir.cirg.washington.edu/fhir/Bundle",
+                apiURL: "https://medmorph-pha-hapi.cirg.washington.edu/fhir/Bundle",
                 //apiURL: "sampleData.json", //uncomment to test
                 initialized: false,
                 dialog: false,
@@ -75,7 +75,13 @@ new Vue({
         },
         getData: function() {
             var self = this;
-            axios.get(this.apiURL)
+            axios.get(this.apiURL,
+                {
+                    // query URL without using browser cache
+                    headers: {
+                      'Cache-Control': 'no-cache'
+                    },
+                })
             .then(function (response) {
                 // handle success
                 //console.log(response.data);
