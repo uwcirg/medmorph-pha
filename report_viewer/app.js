@@ -56,7 +56,10 @@ new Vue({
                 activeItem: {},
                 alert: false,
                 loading: true,
-                errorMessage: ""
+                errorMessage: "",
+                maxWaitCount: 6,
+                waitCount: 0,
+                waitCountTimerId: 0
         };
     },
     mounted: function() {
@@ -83,17 +86,26 @@ new Vue({
                       'Content-Type': 'application/json'
                     }
                   }).then(function(response) {
-                    console.log("OK ", response)
-                    setTimeout(function() {
-                        self.getData();
-                    }, 6000);
+                    self.waitCount = self.maxWaitCount;
+                    self.waitCountTimerId = setInterval(function() {
+                        self.waitCount--;
+                        if (self.waitCount <= 0) {
+                            self.clearWait();
+                            self.getData();
+                        }
+                    }, 1000);
                 }).catch(function (error) {
                     // handle error
                     console.log("POST error ", error);
                     self.setError("Error when refreshing data: " + error);
+                    self.clearWait();
                     self.loading = false;
                 });
             });
+        },
+        clearWait: function() {
+            this.waitCount = 0;
+            clearInterval(this.waitCountTimerId);
         },
         getData: function() {
             var self = this;

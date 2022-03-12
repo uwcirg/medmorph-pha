@@ -78,6 +78,7 @@
                                     color="primary"
                                     class="ml-2"
                                     ></v-progress-circular>
+                                    <div v-show="waitCount > 0" class="orange--text text--darken-4">Time remaining:  <span v-text="waitCount"></span> seconds</div>
                                 </div>
                                 <v-data-table
                                     :headers="headers"
