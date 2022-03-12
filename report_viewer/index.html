@@ -53,8 +53,9 @@
                             class="alert"
                         >
                         </v-alert>
-                        <div v-show="!alert">
-                            <div class="float-right"><v-btn
+                        <div>
+                            <div class="float-right">
+                                <v-btn
                                 color="primary"
                                 class="btn"
                                 dark
@@ -64,13 +65,18 @@
                                 >
                                 Refresh
                                 <v-icon>mdi-refresh</v-icon>
-                                </v-btn></div>
+                                </v-btn>
+                            </div>
                             <br/>
                             <div class="table-container">
                                 <div v-show="loading">
+                                    <span class="orange--text text--darken-4">
+                                        Refreshing data, this may take a while ...
+                                    </span>
                                     <v-progress-circular
                                     indeterminate
                                     color="primary"
+                                    class="ml-2"
                                     ></v-progress-circular>
                                 </div>
                                 <v-data-table

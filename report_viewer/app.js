@@ -18,6 +18,8 @@ new Vue({
     data: function() {
         return {
                 apiURL: "https://medmorph-pha-hapi.cirg.washington.edu/fhir/Bundle",
+                postDataSource: "./Bundle.HIMSS.json",
+                postURL: "https://medmorph-pha-fhir.cirg.washington.edu/fhir/$process-message",
                 //apiURL: "sampleData.json", //uncomment to test
                 initialized: false,
                 dialog: false,
@@ -71,7 +73,27 @@ new Vue({
         },
         refresh: function() {
             this.loading = true;
-            this.getData();
+            var self = this;
+            //post new data
+            axios.get(this.postDataSource).then(function(response) {
+                //console.log(" data ", response.data)
+                axios.post(self.postURL, response.data, {
+                    headers: {
+                      // Overwrite Axios's automatically set Content-Type
+                      'Content-Type': 'application/json'
+                    }
+                  }).then(function(response) {
+                    console.log("OK ", response)
+                    setTimeout(function() {
+                        self.getData();
+                    }, 6000);
+                }).catch(function (error) {
+                    // handle error
+                    console.log("POST error ", error);
+                    self.setError("Error when refreshing data: " + error);
+                    self.loading = false;
+                });
+            });
         },
         getData: function() {
             var self = this;
