@@ -151,7 +151,7 @@ new Vue({
                     })[0] : [];
                     item.link = "";
                     var patientResource = item.data.filter(function(d) {
-                        return d.resource.resourceType === "Patient";
+                        return d.resource && d.resource.resourceType === "Patient";
                     }).map(function(o) {
                         return o.resource;
                     });
