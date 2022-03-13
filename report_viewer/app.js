@@ -223,7 +223,9 @@ new Vue({
             this.activeItem = {};
         },
         viewDetail: function(data, subject) {
-            var resourceTypes = data.map(function(item) {
+            var resourceTypes = data.filter(function(item) {
+                return item.resource && item.resource.resourceType;
+            }).map(function(item) {
                 return item.resource.resourceType;
             }).sort(function(a, b) {
                 return a.localeCompare(b);
@@ -231,7 +233,7 @@ new Vue({
                 return inputArray.indexOf(item) === index;
             }).map(function(item, index) {
                 var resourceData = data.filter(function(o) {
-                    return (o.resource.resourceType === item) && (o.resource.text && o.resource.text.div)
+                    return o.resource && (o.resource.resourceType === item) && (o.resource.text && o.resource.text.div)
                 });
                 return {
                     "name": item,

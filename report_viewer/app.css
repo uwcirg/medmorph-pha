@@ -67,6 +67,9 @@ th i {
     padding: 24px 16px;
     font-size: 0.9rem;
 }
+.content a {
+    line-height: 2;
+}
 .content[datacount='1'],
 .content[dataCount='1'],
 .content[dataCount='0'],
