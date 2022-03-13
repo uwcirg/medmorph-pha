@@ -203,7 +203,10 @@ new Vue({
                     timestamp.getFullYear(),
                     (this.pad(timestamp.getMonth()+1)),
                     this.pad(timestamp.getDate())].join("-") + " " +
-                    [this.pad(timestamp.getHours()), this.pad(timestamp.getMinutes())].join(":");
+                    [this.pad(timestamp.getHours()),
+                    this.pad(timestamp.getMinutes()),
+                    this.pad(timestamp.getSeconds()),
+                    ].join(":");
             }
             timestamp = timestamp.replace(/[\T]/g, " ");
             if (timestamp.indexOf(".") !== -1) {
