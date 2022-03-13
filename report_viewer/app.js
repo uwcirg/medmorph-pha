@@ -88,6 +88,8 @@ new Vue({
             //post new data
             axios.get(this.postDataSource).then(function(response) {
                 //console.log(" data ", response.data)
+                //allow bundle to be updated each time
+                response.data.identifier = [{"value": Date.now(), "system": "https://github.com/uwcirg/medmorph/counter"}];
                 axios.post(self.postURL, response.data, {
                     headers: {
                       // Overwrite Axios's automatically set Content-Type
