@@ -57,14 +57,15 @@ new Vue({
                 alert: false,
                 loading: true,
                 errorMessage: "",
-                maxWaitCount: 6,
+                maxWaitCount: 7,
                 waitMessages:[
-                    "Displaying all case reports",
-                    "Displaying all case reports",
+                    "Displaying all case reports .....",
+                    "Displaying all case reports ....",
+                    "Displaying all case reports ...",
                     "Loading case reports ....",
                     "Loading case reports ...",
-                    "Loading case reports ..",
-                    "Checking for a new case reports ....."
+                    "Checking for a new case reports ....",
+                    "Checking for a new case reports ..."
                 ],
                 waitCount: 0,
                 waitCountTimerId: 0
