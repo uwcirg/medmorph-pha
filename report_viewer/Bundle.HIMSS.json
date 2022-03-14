@@ -870,7 +870,7 @@
           },
           "text": {
             "status": "extensions",
-            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Patient</b></p><p><b>Name</b>: Study ID, 016-002001</p><p><b>Status</b>: Active</p><p><b>DOB</b>: Feb 20, 1960</p><p><b>Birth Sex</b>: Female</p><p><b>Administrative Gender</b>: Female</p><p><b>Marital Status</b>: Single</p></div>"
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Patient</b></p><p><b>Name</b>: Study ID, 016-002001</p><p><b>Status</b>: Active</p><p><b>DOB</b>: Mar 13, 2002</p><p><b>Birth Sex</b>: Female</p><p><b>Administrative Gender</b>: Female</p><p><b>Marital Status</b>: Single</p></div>"
           },
           "extension": [ {
             "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex",
