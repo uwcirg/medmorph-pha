@@ -32,9 +32,9 @@ fi
 # Use given filename, or default if none given
 phi_file=${1:-$default_file}
 
-# Connectathon Patient details
-FNAME=MEREDITH
-LNAME=SHEPHERD
+# HIMSS22 demo Patient details
+FNAME=Akari
+LNAME=Nakamura
 PTID=12746018
 
 # replace first name with a fixed Study ID
@@ -45,7 +45,7 @@ sed -i "s|$LNAME|Study ID|g" "$phi_file"
 
 # replace patient ID with "0"
 # NB replacing patient ID with the phrase "**redacted**" causes errors
-sed -i "s|$PTID|0|g" "$phi_file"
+sed -i "s|$PTID|10|g" "$phi_file"
 
 echo File scrubbed of visible PHI:
 echo $phi_file
