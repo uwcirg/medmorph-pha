@@ -1222,13 +1222,13 @@
                         {
                            "id":"CI-24338532-0",
                            "use":"home",
-                           "text":"2800 Rockcreek Pkwy\nKansas City, MO 64117\nUS",
+                           "text":"2800 Rockcreek Pkwy\nSeattle, WA 98195\nUS",
                            "line":[
                               "2800 Rockcreek Pkwy"
                            ],
-                           "city":"Kansas City",
-                           "state":"MO",
-                           "postalCode":"64117",
+                           "city":"Seattle",
+                           "state":"WA",
+                           "postalCode":"98195",
                            "country":"US",
                            "period":{
                               "start":"2020-11-06T21:16:55.000Z"
