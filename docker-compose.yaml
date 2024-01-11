@@ -19,6 +19,7 @@ services:
       - traefik.http.routers.fhir-proxy-${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt
     networks:
       - internal
+      - ingress
 
   fhir:
     image: hapiproject/hapi:${FHIR_IMAGE_TAG:-v6.8.3}
