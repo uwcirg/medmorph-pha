@@ -9,7 +9,7 @@ COPY . .
 
 EXPOSE 5000
 
-ENV FLASK_APP=medmorph_pha/app:create_app() \
+ENV FLASK_APP=fhir_proxy/app:create_app() \
     FLASK_ENV=development
 
 CMD flask run --host 0.0.0.0

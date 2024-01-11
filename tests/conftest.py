@@ -2,7 +2,7 @@ import os
 import json
 from pytest import fixture
 
-from medmorph_pha.app import create_app
+from fhir_proxy.app import create_app
 
 @fixture
 def app():

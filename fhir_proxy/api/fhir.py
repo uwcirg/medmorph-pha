@@ -1,6 +1,6 @@
 from flask import Blueprint, abort, current_app, jsonify, request
 
-from medmorph_pha.models.process_message import (
+from fhir_proxy.models.process_message import (
     process_message_operation,
     remote_request,
 )

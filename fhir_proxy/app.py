@@ -1,14 +1,14 @@
 from flask import Flask
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-from medmorph_pha import api
+from fhir_proxy import api
 
 
 def create_app(testing=False, cli=False):
     """Application factory, used to create application
     """
-    app = Flask('medmorph_pha')
-    app.config.from_object('medmorph_pha.config')
+    app = Flask('fhir_proxy')
+    app.config.from_object('fhir_proxy.config')
     app.config['TESTING'] = testing
     app.logger.setLevel(app.config['LOG_LEVEL'])
 

@@ -3,6 +3,6 @@ __pycache__
 .eggs
 .tox
 coverage.xml
-medmorph_pha.egg-info
+fhir_proxy.egg-info
 tests/.coverage
 

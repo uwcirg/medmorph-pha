@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(
-    name="medmorph_pha",
-    packages=["medmorph_pha"],
+    name="fhir_proxy",
+    packages=["fhir_proxy"],
     include_package_data=True,
 )

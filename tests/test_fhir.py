@@ -1,7 +1,7 @@
 from flask import url_for
 
 from conftest import MockedResponse
-from medmorph_pha.models.process_message import (
+from fhir_proxy.models.process_message import (
     get_first_resource,
     process_message_operation,
 )
@@ -35,7 +35,7 @@ def test_process_message(
     # Patch remote_request to interrupt call to HAPI during process message
     mr = MockedResponse(reporting_bundle_response_example)
     mocker.patch(
-        'medmorph_pha.models.process_message.remote_request',
+        'fhir_proxy.models.process_message.remote_request',
         return_value=mr)
 
     response_bundle = process_message_operation(
@@ -53,7 +53,7 @@ def test_process_zika_message(
     # Patch remote_request to interrupt call to `fhir_url` during process message
     mr = MockedResponse(zika_response_bundle_example)
     mocker.patch(
-        'medmorph_pha.models.process_message.remote_request',
+        'fhir_proxy.models.process_message.remote_request',
         return_value=mr)
 
     response_bundle = process_message_operation(
@@ -69,7 +69,7 @@ def test_process_zika_message(
 def test_passthrough_put(client, mocker, org_example):
     mr = MockedResponse(org_example)
     mocker.patch(
-        'medmorph_pha.api.fhir.remote_request',
+        'fhir_proxy.api.fhir.remote_request',
         return_value=mr)
     response = client.put(
         url_for('fhir.route_fhir', relative_path='Organization/hl7'),
