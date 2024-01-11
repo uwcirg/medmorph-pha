@@ -14,30 +14,61 @@ services:
       - medmorph_pha.env
 
   fhir:
-    image: hapiproject/hapi:${FHIR_IMAGE_TAG:-v5.5.1}
+    image: hapiproject/hapi:${FHIR_IMAGE_TAG:-v6.8.3}
     environment:
-      SPRING_CONFIG_LOCATION: file:///opt/application.yaml
       spring.datasource.url: jdbc:postgresql://db:5432/hapifhir
       spring.datasource.username: postgres
       spring.datasource.password: postgres
       spring.datasource.driverClassName: org.postgresql.Driver
-      spring.jpa.hibernate.dialect: org.hibernate.dialect.PostgreSQL94Dialect
-      hapi.fhir.server_address: "https://fhir.${BASE_DOMAIN:-localtest.me}/fhir/"
+      spring.jpa.properties.hibernate.dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
 
+      hapi.fhir.bulk_export_enabled: "true"
+      hapi.fhir.bulk_import_enabled: "true"
+      # TODO remove when cascading delete generally available in FHIR REST API
+      hapi.fhir.enforce_referential_integrity_on_delete: "false"
+      # allow direct assignment of resource IDs in any format
+      hapi.fhir.client_id_strategy: ANY
+
+      hapi.fhir.server_address: https://fhir.${BASE_DOMAIN}/fhir/
+
+      SPRING_CONFIG_LOCATION: file:///opt/application.yaml
     volumes:
-      - "./config/fhir/application.yaml:/opt/application.yaml:ro"
-    ports:
-      # allow override of published port
-      - ${HAPI_EXTERNAL_PORT:-8080}:8080
+      - ./config/fhir/application.yaml:/opt/application.yaml:ro
+    depends_on:
+      - db
+    networks:
+      internal:
+        aliases:
+          - fhir-internal
+      ingress:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.fhir-${COMPOSE_PROJECT_NAME}.rule=Host(`fhir.${BASE_DOMAIN}`)
+      - traefik.http.routers.fhir-${COMPOSE_PROJECT_NAME}.entrypoints=websecure
+      - traefik.http.routers.fhir-${COMPOSE_PROJECT_NAME}.tls=true
+      - traefik.http.routers.fhir-${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt
 
+      # Hapi does not EXPOSE the ports it listens on, requiring explicit traefik configuration
+      - traefik.http.services.fhir-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8080
   db:
-    image: postgres:13
+    image: postgres:${POSTGRES_IMAGE_TAG:-16}
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: hapifhir
     volumes:
-      - "db-data:/var/lib/postgresql/data"
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - internal
 
 volumes:
-  db-data:
+  db-data: {}
+
+networks:
+  # internal network for backing services
+  internal:
+
+  # ingress network
+  ingress:
+    external: true
+    name: external_web
